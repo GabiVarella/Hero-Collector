@@ -9,13 +9,13 @@ body {
   }
 
   .nav-wrapper {
-    background-color: aquamarine;
+    background-color: rgb(99, 196, 164);
 }
   
   footer.page-footer {
     padding-top: 0;
     text-align: right;
-    background-color: aquamarine;
+    background-color: rgb(53, 131, 101);
   }
 
   

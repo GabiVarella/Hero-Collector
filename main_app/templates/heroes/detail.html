@@ -1,13 +1,55 @@
+
+
 {% extends 'base.html' %}
 {% block content %}
-<h1>Hero Details</h1>
-<div class="card">
-  <div class="card-content">
-    <span class="card-title">{{ hero.name }}</span>
-    <p>Alter Ego: {{ hero.alter_ego }}</p>
-    <p>Super Powers: {{ hero.super_powers }}</p>
-    <p>Arch Enemy: {{ hero.arch_enemy }}</p>
-    
+
+<h1>{{hero.name}} Details</h1>
+
+<div class="row">
+  <div class="col s6">
+    <div class="card">
+      <div class="card-content">
+        <span class="card-title">{{ hero.name }}</span>
+        <p>Alter Ego: {{ hero.alter_ego }}</p>
+        <p>Super Powers: {{ hero.super_powers }}</p>
+        <p>Weapons:</p>
+        {% for w in hero.weapon_set.all %}
+          <p>{{ w.name }}</p>
+        {% endfor %}
+
+      </div>
+      <div class="card-action">
+        <a href="{% url 'heroes_update' hero.id %}">Edit</a>
+        <a href="{% url 'heroes_delete' hero.id %}">Delete</a>
+      </div>
+    </div>
+  </div>
+  <div class="col s6">
+    <p1>Create a Weapon</p1>
+
+    <form action="{% url 'add_weapon' hero.id %}" method="post">
+      {% csrf_token %}
+      {{ weapon_form.as_p }}
+      <input type="submit" class="btn" value="Add Weapon">
+    </form>
+    <table class="striped">
+      <thead>
+        <tr><th>Weapon Name</th><th>Weapon Power</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        {% for weapon in hero.weapon_set.all %}
+          <tr>
+            <td>{{weapon.name}}</td>
+            <td>{{weapon.power}}</td>
+            <td>{{weapon.description}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
+<script>
+  var selectEl = document.getElementById('id_power');
+  M.FormSelect.init(selectEl);
+</script>
 {% endblock %}
