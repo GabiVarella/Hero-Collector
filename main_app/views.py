@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Hero
+from .models import Hero, Enemy
 from .forms import WeaponForm
 
 
@@ -19,8 +19,15 @@ def heroes_index(request):
 
 def heroes_detail(request, hero_id):
   hero = Hero.objects.get(id=hero_id)
+  enemies_hero_doesnt_have = Enemy.objects.exclude(id__in = hero.enemies.all().values_list('id'))
   weapon_form = WeaponForm()
   return render(request, 'heroes/detail.html', {'hero': hero, 'weapon_form': weapon_form})
+
+def assoc_enemy(request, hero_id, enemy_id):
+  # Note that you can pass a toy's id instead of the whole object
+  Hero.objects.get(id=hero_id).enemies.add(enemy_id)
+  return redirect('detail', hero_id=hero_id)
+
 
 def add_weapon(request, hero_id):
   # create a ModelForm instance using the data in request.POST
@@ -28,7 +35,7 @@ def add_weapon(request, hero_id):
   # validate the form
   if form.is_valid():
     # don't save the form to the db until it
-    # has the cat_id assigned
+    # has the hero_id assigned
     new_weapon = form.save(commit=False)
     new_weapon.hero_id = hero_id
     new_weapon.save()

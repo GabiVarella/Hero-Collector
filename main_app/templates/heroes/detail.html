@@ -48,6 +48,51 @@
     </table>
   </div>
 </div>
+<hr>
+<div class="row">
+  <div class="col s6">
+    <h3>{{ hero.name }}'s Enemies</h3>
+    {% if hero.enemies.count %}
+      {% for enemy in hero.enemies.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              <p1>Name: {{ enemy.name }}</p1>
+            </span>
+            <span class="card-title">
+              <p1>Powers: {{ enemy.super_powers }}</p1>
+            </span>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>No Enemies Listed :(</h5>
+    {% endif %}
+  </div>
+
+
+  <div class="col s6">
+    <h3>Enemies</h3>
+    {% if enemies.count %}
+      {% for enemy in enemies.all %}
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title">
+              <span style="color: green">{{ enemy.name }}</span>
+            </span>
+          </div>
+          <div class="card-action">
+            <form action="" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn">Add</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <h5>{{hero.name}} Already Has All Enemies Available</h5>
+    {% endif %}
+  </div></div>
 <script>
   var selectEl = document.getElementById('id_power');
   M.FormSelect.init(selectEl);
